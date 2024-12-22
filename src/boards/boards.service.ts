@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Boards, BoardsStatus } from './boards.model';
 import { v1 as uuid } from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -35,12 +35,23 @@ export class BoardsService {
     const { id } = getBoardByIdDto;
     const targetBoard = this.boards.find((board) => board.id === id);
 
+    // targetBoard가 존재하지 않으면 404 에러
+    if (!targetBoard) {
+      throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
+    }
+
     return targetBoard;
   }
 
   deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto) {
     const { id } = getBoardByIdDto;
     const deletedBoard = this.boards.find((board) => board.id === id);
+
+    // deletedBoard가 존재하지 않으면 404 에러
+    if (!deletedBoard) {
+      throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
+    }
+
     this.boards = this.boards.filter((board) => board.id !== id);
     return deletedBoard;
   }
