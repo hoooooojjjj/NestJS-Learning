@@ -8,6 +8,7 @@ import { UpdateBoardsStatusByIdDto } from './dto/update-boardstatus-by-id.dto';
 export class BoardsService {
   private boards: Boards[] = [];
 
+  // 모든 게시판 조회
   getAllBoards(): Boards[] {
     return this.boards;
   }
