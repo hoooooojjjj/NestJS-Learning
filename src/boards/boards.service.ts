@@ -20,26 +20,26 @@ export class BoardsService {
     const allBoards = await this.boardsRepository.find();
 
     // 게시판이 존재하지 않을 때 404
-    if (!allBoards) {
+    if (allBoards.length === 0) {
       throw new NotFoundException('현재 게시판이 존재하지 않습니다.');
     }
 
     return allBoards;
   }
 
-  // createBoards(createBoardDto: CreateBoardDto): Boards {
-  //   const boardsId = uuid();
-  //   const { title } = createBoardDto;
-  //   const { description } = createBoardDto;
-  //   const newBoard: Boards = {
-  //     id: boardsId,
-  //     title,
-  //     description,
-  //     status: BoardsStatus.PUBLIC,
-  //   };
-  //   this.boards.push(newBoard);
-  //   return newBoard;
-  // }
+  createBoards(createBoardDto: CreateBoardDto): BoardEntity {
+    const { title } = createBoardDto;
+    const { description } = createBoardDto;
+
+    const newBoard = this.boardsRepository.create({
+      title,
+      description,
+    });
+
+    console.log(newBoard);
+
+    return newBoard;
+  }
 
   // id로 특정 게시판 찾기
   async getBoardByIds(getBoardByIdDto: GetBoardByIdDto): Promise<BoardEntity> {
