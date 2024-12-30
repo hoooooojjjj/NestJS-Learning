@@ -49,9 +49,7 @@ export class BoardsController {
   @Delete('/:id')
   // 성공적으로 삭제된 경우 응답 바디 없이 204 No Content 응답
   @HttpCode(204)
-  async deleteBoardById(
-    @Param() getBoardByIdDto: GetBoardByIdDto,
-  ): Promise<BoardEntity> {
+  async deleteBoardById(@Param() getBoardByIdDto: GetBoardByIdDto) {
     return this.boardsService.deleteBoardByIds(getBoardByIdDto);
   }
 

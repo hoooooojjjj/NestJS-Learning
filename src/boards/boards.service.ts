@@ -51,6 +51,7 @@ export class BoardsService {
     return this.boardsRepository.createBoard(createBoardDto);
   }
 
+  // 게시판 삭제하기
   async deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto) {
     return this.boardsRepository.deleteBoard(getBoardByIdDto);
   }

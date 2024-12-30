@@ -30,26 +30,23 @@ export class BoardRepository extends Repository<BoardEntity> {
   }
 
   // 게시판 삭제 메소드
-  async deleteBoard(getBoardByIdDto: GetBoardByIdDto): Promise<BoardEntity> {
+  async deleteBoard(getBoardByIdDto: GetBoardByIdDto) {
     const { id } = getBoardByIdDto;
 
-    // 지울 게시물 찾기
-    const deletedBoard = await this.findOne({
-      where: {
-        id: id,
-      },
-    });
-
-    // deletedBoard가 존재하지 않으면 404 에러
-    if (!deletedBoard) {
-      throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
-    }
-
     // 해당 id를 가진 게시판을 제거
-    await this.delete({
+    // remove 메서드는 찾는 column이 없으면 바로 404 에러를 반환
+    // delete 메서드는 찾는 Colum이 없어도 404 에러를 반환하지 않음
+    // 그렇기 때문에 remove 메서드를 사용할 때 값이 없으면 무조건 404 에러를 반환하게 되기
+    // 때문에 그렇게 하고 싶지 않으면 findOne 메서드를 사용해서 값이 존재하는지 확인하는
+    // 작업이 한번 더 필요함. 그래서 delete 메서드를 사용
+    const deletedResult = await this.delete({
       id,
     });
 
-    return;
+    // deletedBoard가 존재하지 않으면 404 에러
+    // affected는 영향을 받은 column의 수
+    if (deletedResult.affected === 0) {
+      throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
+    }
   }
 }
