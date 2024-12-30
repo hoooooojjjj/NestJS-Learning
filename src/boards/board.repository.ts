@@ -4,6 +4,7 @@ import { BoardEntity } from './board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardsStatus } from './boards-status-enum';
 import { GetBoardByIdDto } from './dto/get-board-by-id.dto';
+import { UpdateBoardsStatusByIdDto } from './dto/update-boardstatus-by-id.dto';
 
 // BoardEntity를 제어하기 위한 BoardRepository를 생성 -> 엔티티를 컨트롤함.
 @Injectable()
@@ -47,6 +48,21 @@ export class BoardRepository extends Repository<BoardEntity> {
     // affected는 영향을 받은 column의 수
     if (deletedResult.affected === 0) {
       throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
+    }
+  }
+
+  // 게시판 상태 업데이트 메소드
+  async updateBoardStatus(
+    updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto,
+  ) {
+    const { id, status } = updateBoardsStatusByIdDto;
+
+    const updateResult = await this.update(id, {
+      status: status,
+    });
+
+    if (updateResult.affected === 0) {
+      throw new NotFoundException('d');
     }
   }
 }

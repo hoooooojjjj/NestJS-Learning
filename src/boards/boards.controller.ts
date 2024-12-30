@@ -53,13 +53,13 @@ export class BoardsController {
     return this.boardsService.deleteBoardByIds(getBoardByIdDto);
   }
 
-  // // 특정 게시판 업데이트하기
-  // @Put()
-  // @UsePipes(BoardsStatusValidationPipe)
-  // updateBoardStatusById(
-  //   @Query()
-  //   updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto,
-  // ) {
-  //   return this.boardsService.updateBoardStatusByIds(updateBoardsStatusByIdDto);
-  // }
+  // 특정 게시판 업데이트하기
+  @Put()
+  @UsePipes(BoardsStatusValidationPipe)
+  updateBoardStatusById(
+    @Query()
+    updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto,
+  ) {
+    return this.boardsService.updateBoardStatusByIds(updateBoardsStatusByIdDto);
+  }
 }

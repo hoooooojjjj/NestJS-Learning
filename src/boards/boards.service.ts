@@ -56,16 +56,10 @@ export class BoardsService {
     return this.boardsRepository.deleteBoard(getBoardByIdDto);
   }
 
-  // updateBoardStatusByIds(updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto) {
-  //   const { id } = updateBoardsStatusByIdDto;
-  //   const { status } = updateBoardsStatusByIdDto;
-  //   const targetBoard = this.boards.find((board) => board.id === id);
-  //   this.boards = this.boards.map((board) => {
-  //     if (board.id === id) {
-  //       board.status = status;
-  //     }
-  //     return board;
-  //   });
-  //   return targetBoard;
-  // }
+  // 게시판 상태 업데이트하기
+  async updateBoardStatusByIds(
+    updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto,
+  ) {
+    return this.boardsRepository.updateBoardStatus(updateBoardsStatusByIdDto);
+  }
 }
