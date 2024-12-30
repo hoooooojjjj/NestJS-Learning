@@ -54,15 +54,31 @@ export class BoardRepository extends Repository<BoardEntity> {
   // 게시판 상태 업데이트 메소드
   async updateBoardStatus(
     updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto,
-  ) {
+  ): Promise<BoardEntity> {
     const { id, status } = updateBoardsStatusByIdDto;
 
-    const updateResult = await this.update(id, {
-      status: status,
+    // 업데이트 시에는 데이터를 반환해주는 것이 관례,
+    // 그래서 update 메서드를 쓰는 것보다 인스턴스를 변경하고 save하는 것도 방법
+
+    // 해당 id인 게시판 찾기
+    const targetBoard = await this.findOne({
+      where: {
+        id,
+      },
     });
 
-    if (updateResult.affected === 0) {
-      throw new NotFoundException('d');
+    // 없으면 404 에러
+    if (!targetBoard) {
+      throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
     }
+
+    // 해당 게시판 상태 업데이트
+    targetBoard.status = status;
+
+    // 업데이트 저장
+    await this.save(targetBoard);
+
+    // 업데이트된 게시판 반환
+    return targetBoard;
   }
 }

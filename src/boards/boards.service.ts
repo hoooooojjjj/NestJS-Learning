@@ -59,7 +59,7 @@ export class BoardsService {
   // 게시판 상태 업데이트하기
   async updateBoardStatusByIds(
     updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto,
-  ) {
+  ): Promise<BoardEntity> {
     return this.boardsRepository.updateBoardStatus(updateBoardsStatusByIdDto);
   }
 }
