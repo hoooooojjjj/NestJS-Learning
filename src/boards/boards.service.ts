@@ -27,20 +27,6 @@ export class BoardsService {
     return allBoards;
   }
 
-  createBoards(createBoardDto: CreateBoardDto): BoardEntity {
-    const { title } = createBoardDto;
-    const { description } = createBoardDto;
-
-    const newBoard = this.boardsRepository.create({
-      title,
-      description,
-    });
-
-    console.log(newBoard);
-
-    return newBoard;
-  }
-
   // id로 특정 게시판 찾기
   async getBoardByIds(getBoardByIdDto: GetBoardByIdDto): Promise<BoardEntity> {
     const { id } = getBoardByIdDto;
@@ -59,6 +45,12 @@ export class BoardsService {
     return targetBoard;
   }
 
+  // 게시판 생성하기
+  async createBoards(createBoardDto: CreateBoardDto): Promise<BoardEntity> {
+    // repository patterns를 사용 -> 데이터베이스 관련(데이터 처리) 코드는 repository 파일에서 처리
+    return this.boardsRepository.createBoard(createBoardDto);
+  }
+
   // deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto) {
   //   const { id } = getBoardByIdDto;
   //   const deletedBoard = this.boards.find((board) => board.id === id);
@@ -69,6 +61,7 @@ export class BoardsService {
   //   this.boards = this.boards.filter((board) => board.id !== id);
   //   return deletedBoard;
   // }
+
   // updateBoardStatusByIds(updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto) {
   //   const { id } = updateBoardsStatusByIdDto;
   //   const { status } = updateBoardsStatusByIdDto;

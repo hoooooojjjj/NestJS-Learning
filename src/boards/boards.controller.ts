@@ -28,18 +28,20 @@ export class BoardsController {
     return this.boardsService.getAllBoards();
   }
 
-  // 게시판 생성하기
-  @Post()
-  // ValidationPipe로 데이터 유효성 검사
-  @UsePipes(ValidationPipe)
-  createBoard(@Body() createBoardDto: CreateBoardDto): BoardEntity {
-    return this.boardsService.createBoards(createBoardDto);
-  }
-
   // 특정 게시판 가져오기
   @Get('/:id')
   getBoardById(@Param() getBoardByIdDto: GetBoardByIdDto) {
     return this.boardsService.getBoardByIds(getBoardByIdDto);
+  }
+
+  // 게시판 생성하기
+  @Post()
+  // ValidationPipe로 데이터 유효성 검사
+  @UsePipes(ValidationPipe)
+  async createBoard(
+    @Body() createBoardDto: CreateBoardDto,
+  ): Promise<BoardEntity> {
+    return this.boardsService.createBoards(createBoardDto);
   }
 
   // // 특정 게시판 삭제하기
