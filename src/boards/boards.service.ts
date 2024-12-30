@@ -51,16 +51,9 @@ export class BoardsService {
     return this.boardsRepository.createBoard(createBoardDto);
   }
 
-  // deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto) {
-  //   const { id } = getBoardByIdDto;
-  //   const deletedBoard = this.boards.find((board) => board.id === id);
-  //   // deletedBoard가 존재하지 않으면 404 에러
-  //   if (!deletedBoard) {
-  //     throw new NotFoundException(` id가 ${id}인 게시물이 존재하지 않습니다`);
-  //   }
-  //   this.boards = this.boards.filter((board) => board.id !== id);
-  //   return deletedBoard;
-  // }
+  async deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto) {
+    return this.boardsRepository.deleteBoard(getBoardByIdDto);
+  }
 
   // updateBoardStatusByIds(updateBoardsStatusByIdDto: UpdateBoardsStatusByIdDto) {
   //   const { id } = updateBoardsStatusByIdDto;
