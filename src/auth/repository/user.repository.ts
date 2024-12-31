@@ -28,7 +28,7 @@ export class UserRepository extends Repository<UserEntity> {
       await this.save(newUser);
     } catch (error) {
       if (error.code === '23505') {
-        throw new ConflictException('이미 존재하는 아이디입니다');
+        throw new ConflictException(`${newUser}은 이미 존재하는 아이디입니다`);
       } else {
         throw new InternalServerErrorException();
       }
