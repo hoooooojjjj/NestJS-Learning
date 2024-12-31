@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { UserEntity } from 'src/auth/entity/user.entity';
 import { BoardEntity } from 'src/boards/board.entity';
 
 // typeOrm을 통해서 NestJS와 데이터베이스 연동
@@ -9,6 +10,6 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   username: 'postgres',
   password: 'postgres',
   database: 'board-app',
-  entities: [BoardEntity], // 엔티티 추가
+  entities: [BoardEntity, UserEntity], // 엔티티 추가
   synchronize: true, // 개발 환경에서만 사용 권장
 };
