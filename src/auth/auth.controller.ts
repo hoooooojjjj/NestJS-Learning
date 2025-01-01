@@ -16,9 +16,7 @@ export class AuthController {
 
   @Post('/signup')
   @UsePipes(ValidationPipe)
-  createUser(
-    @Body() authCredentialDto: AuthCredentialDto,
-  ): Promise<UserEntity> {
+  createUser(@Body() authCredentialDto: AuthCredentialDto): Promise<void> {
     return this.authService.createUser(authCredentialDto);
   }
 }

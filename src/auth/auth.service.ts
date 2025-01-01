@@ -11,7 +11,7 @@ export class AuthService {
     private userRepository: UserRepository,
   ) {}
 
-  createUser(authCredentialDto: AuthCredentialDto): Promise<UserEntity> {
+  createUser(authCredentialDto: AuthCredentialDto): Promise<void> {
     return this.userRepository.createUser(authCredentialDto);
   }
 }
