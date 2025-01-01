@@ -32,7 +32,7 @@ export class AuthService {
 
     const { username } = authCredentialDto;
 
-    // payload에 해당 유저의 정보를 기록 (etc. 이름, 권환, 이메일 등)
+    // payload에 해당 유저의 정보를 기록 (etc. 이름, 권한, 이메일 등)
     // -> payload에는 중요한 정보 저장하면 안됨 !
     const payload = { username };
 
