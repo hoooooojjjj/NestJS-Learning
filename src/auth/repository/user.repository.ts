@@ -2,6 +2,8 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { UserEntity } from '../entity/user.entity';
@@ -46,6 +48,32 @@ export class UserRepository extends Repository<UserEntity> {
       } else {
         throw new InternalServerErrorException();
       }
+    }
+  }
+
+  async signin(authCredentialDto: AuthCredentialDto): Promise<string> {
+    const { username, password } = authCredentialDto;
+
+    // 먼저 username을 통해서 해당하는 사용자를 찾음 -> username은 유니한 값을 가짐
+    const foundUserByUserName = await this.findOne({
+      where: {
+        username,
+      },
+    });
+
+    if (!foundUserByUserName) {
+      throw new UnauthorizedException(
+        `${username}을 가진 사용자가 존재하지 않습니다.`,
+      );
+    }
+
+    // 그 다음 해당 user의 암호화된 비밀번호와 넘어온 비밀번호를 비교
+    if (await bcrypt.compare(password, foundUserByUserName.password)) {
+      return '로그인이 성공하였습니다';
+    } else {
+      throw new UnauthorizedException(
+        '해당 비밀번호를 가진 사용자가 존재하지 않습니다',
+      );
     }
   }
 }

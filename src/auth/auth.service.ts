@@ -11,7 +11,13 @@ export class AuthService {
     private userRepository: UserRepository,
   ) {}
 
+  // 유저 생성(회원가입)
   createUser(authCredentialDto: AuthCredentialDto): Promise<void> {
     return this.userRepository.createUser(authCredentialDto);
+  }
+
+  // 로그인
+  signin(authCredentialDto: AuthCredentialDto): Promise<string> {
+    return this.userRepository.signin(authCredentialDto);
   }
 }
