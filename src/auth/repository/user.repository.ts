@@ -51,7 +51,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async signin(authCredentialDto: AuthCredentialDto): Promise<string> {
+  async signin(authCredentialDto: AuthCredentialDto): Promise<boolean> {
     const { username, password } = authCredentialDto;
 
     // 먼저 username을 통해서 해당하는 사용자를 찾음 -> username은 유니한 값을 가짐
@@ -61,6 +61,7 @@ export class UserRepository extends Repository<UserEntity> {
       },
     });
 
+    // 해당 username을 가진 사용자가 없으면 401 에러
     if (!foundUserByUserName) {
       throw new UnauthorizedException(
         `${username}을 가진 사용자가 존재하지 않습니다.`,
@@ -69,11 +70,9 @@ export class UserRepository extends Repository<UserEntity> {
 
     // 그 다음 해당 user의 암호화된 비밀번호와 넘어온 비밀번호를 비교
     if (await bcrypt.compare(password, foundUserByUserName.password)) {
-      return '로그인이 성공하였습니다';
+      return true;
     } else {
-      throw new UnauthorizedException(
-        '해당 비밀번호를 가진 사용자가 존재하지 않습니다',
-      );
+      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
   }
 }
