@@ -64,10 +64,14 @@ export class BoardsController {
 
   // 특정 게시판 삭제하기
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   // 성공적으로 삭제된 경우 응답 바디 없이 204 No Content 응답
   @HttpCode(204)
-  async deleteBoardById(@Param() getBoardByIdDto: GetBoardByIdDto) {
-    return this.boardsService.deleteBoardByIds(getBoardByIdDto);
+  async deleteBoardById(
+    @Param() getBoardByIdDto: GetBoardByIdDto,
+    @GetUser() user: UserEntity,
+  ) {
+    return this.boardsService.deleteBoardByIds(getBoardByIdDto, user);
   }
 
   // 특정 게시판 업데이트하기

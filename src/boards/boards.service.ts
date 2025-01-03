@@ -73,8 +73,8 @@ export class BoardsService {
   }
 
   // 게시판 삭제하기
-  async deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto) {
-    return this.boardsRepository.deleteBoard(getBoardByIdDto);
+  async deleteBoardByIds(getBoardByIdDto: GetBoardByIdDto, user: UserEntity) {
+    return this.boardsRepository.deleteBoard(getBoardByIdDto, user);
   }
 
   // 게시판 상태 업데이트하기
