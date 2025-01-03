@@ -26,10 +26,8 @@ export class BoardRepository extends Repository<BoardEntity> {
       title,
       description,
       status: BoardsStatus.PUBLIC,
+      user, //  게시판 생성 시 유저 정보도 함께 저장
     });
-
-    // 게시판 생성 시 유저 정보도 함께 저장
-    newBoard.user = user;
 
     // 그리고 save 메서드를 통해서 생성한 BoardEntity 인스턴스를 데이터베이스에 저장
     await this.save(newBoard);
