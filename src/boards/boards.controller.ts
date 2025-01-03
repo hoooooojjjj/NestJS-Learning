@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { GetBoardByIdDto } from './dto/get-board-by-id.dto';
 import { UpdateBoardsStatusByIdDto } from './dto/update-boardstatus-by-id.dto';
 import { BoardsStatusValidationPipe } from './pipes/boards-status-validation.pipe';
 import { BoardEntity } from './board.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('boards')
 export class BoardsController {
@@ -25,6 +27,7 @@ export class BoardsController {
 
   // 모든 게시판 가져오기
   @Get()
+  @UseGuards(AuthGuard())
   getAllBoard(): Promise<BoardEntity[]> {
     return this.boardsService.getAllBoards();
   }
