@@ -33,9 +33,17 @@ export class BoardsService {
     user: UserEntity,
   ): Promise<BoardEntity | BoardEntity[]> {
     // @GetUser로 받아온 엑세스 토큰 payload에 있는 user 객체를 통해 해당 유저의 게시판 찾기
-    const userBoards = await this.boardsRepository.findBy({
-      user,
-    });
+
+    // 그냥 일반적인 repository api로 찾기 -> 간단한 쿼리에서는 이걸 추천
+    // const userBoards = await this.boardsRepository.findBy({
+    //   user,
+    // });
+
+    // 쿼리 빌더를 사용해서 찾기 -> 복잡한 쿼리에서는 이걸 추천
+    const userBoards = await this.boardsRepository
+      .createQueryBuilder('board_entity') // board_entity 테이블에서 쿼리 빌더를 생성
+      .where('board_entity.userId = :userId', { userId: user.id }) // board_entity의 userId 필드가 user.id 인것만
+      .getMany(); // 모두 가져오기
 
     // 없으면 404 에러 반환
     if (!userBoards) {
