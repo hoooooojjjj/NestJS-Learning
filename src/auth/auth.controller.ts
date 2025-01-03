@@ -12,6 +12,8 @@ import {
 import { AuthService } from './auth.service';
 import { AuthCredentialDto } from './dto/authCredentailDto';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from './decorator/get-user.decorator';
+import { UserEntity } from './entity/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +39,7 @@ export class AuthController {
   // 이때 PassportStrategy를 사용했기 때문에 AuthGuard()를 인자로 넣어주면
   // 자동으로 JwtStrategy에서 작성한 validate() 메서드로 인증 로직이 처리됨
   @UseGuards(AuthGuard())
-  authTest(@Request() req) {
-    console.log(req.user);
+  authTest(@GetUser() user: UserEntity) {
+    console.log(user);
   }
 }
