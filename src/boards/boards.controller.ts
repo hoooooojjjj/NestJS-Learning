@@ -19,6 +19,8 @@ import { UpdateBoardsStatusByIdDto } from './dto/update-boardstatus-by-id.dto';
 import { BoardsStatusValidationPipe } from './pipes/boards-status-validation.pipe';
 import { BoardEntity } from './board.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { UserEntity } from 'src/auth/entity/user.entity';
 
 @Controller('boards')
 export class BoardsController {
@@ -34,18 +36,21 @@ export class BoardsController {
 
   // 특정 게시판 가져오기
   @Get('/:id')
+  @UseGuards(AuthGuard())
   getBoardById(@Param() getBoardByIdDto: GetBoardByIdDto) {
     return this.boardsService.getBoardByIds(getBoardByIdDto);
   }
 
   // 게시판 생성하기
   @Post()
+  @UseGuards(AuthGuard())
   // ValidationPipe로 데이터 유효성 검사
   @UsePipes(ValidationPipe)
   async createBoard(
     @Body() createBoardDto: CreateBoardDto,
+    @GetUser() user: UserEntity,
   ): Promise<BoardEntity> {
-    return this.boardsService.createBoards(createBoardDto);
+    return this.boardsService.createBoards(createBoardDto, user);
   }
 
   // 특정 게시판 삭제하기

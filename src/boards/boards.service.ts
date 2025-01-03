@@ -7,6 +7,7 @@ import { UpdateBoardsStatusByIdDto } from './dto/update-boardstatus-by-id.dto';
 import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardEntity } from './board.entity';
+import { UserEntity } from 'src/auth/entity/user.entity';
 @Injectable()
 export class BoardsService {
   // BoardRepository 의존성 주입 -> InjectRepository 데코레이터를 통해서 BoardRepository를 레포지토리로 사용한다고 설정해줘야함
@@ -46,9 +47,12 @@ export class BoardsService {
   }
 
   // 게시판 생성하기
-  async createBoards(createBoardDto: CreateBoardDto): Promise<BoardEntity> {
+  async createBoards(
+    createBoardDto: CreateBoardDto,
+    user: UserEntity,
+  ): Promise<BoardEntity> {
     // repository patterns를 사용 -> 데이터베이스 관련(데이터 처리) 코드는 repository 파일에서 처리
-    return this.boardsRepository.createBoard(createBoardDto);
+    return this.boardsRepository.createBoard(createBoardDto, user);
   }
 
   // 게시판 삭제하기
