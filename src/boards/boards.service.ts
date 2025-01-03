@@ -28,6 +28,23 @@ export class BoardsService {
     return allBoards;
   }
 
+  // 특정 유저의 게시판 조회
+  async getUserBoardByUserId(
+    user: UserEntity,
+  ): Promise<BoardEntity | BoardEntity[]> {
+    // @GetUser로 받아온 엑세스 토큰 payload에 있는 user 객체를 통해 해당 유저의 게시판 찾기
+    const userBoards = await this.boardsRepository.findBy({
+      user,
+    });
+
+    // 없으면 404 에러 반환
+    if (!userBoards) {
+      throw new NotFoundException('해당 유저의 게시판이 존재하지 않습니다');
+    }
+
+    return userBoards;
+  }
+
   // id로 특정 게시판 찾기
   async getBoardByIds(getBoardByIdDto: GetBoardByIdDto): Promise<BoardEntity> {
     const { id } = getBoardByIdDto;

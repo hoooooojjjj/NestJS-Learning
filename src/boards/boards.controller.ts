@@ -41,6 +41,15 @@ export class BoardsController {
     return this.boardsService.getBoardByIds(getBoardByIdDto);
   }
 
+  // 특정 유저의 게시판만 가져오기
+  @Get('/user/board')
+  @UseGuards(AuthGuard())
+  getUserBoardByUserId(
+    @GetUser() user: UserEntity,
+  ): Promise<BoardEntity | BoardEntity[]> {
+    return this.boardsService.getUserBoardByUserId(user);
+  }
+
   // 게시판 생성하기
   @Post()
   @UseGuards(AuthGuard())
