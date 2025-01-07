@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { BoardsStatus } from './boards-status-enum';
 import { v1 as uuid } from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -16,6 +16,9 @@ export class BoardsService {
     private boardsRepository: BoardRepository,
   ) {}
 
+  // 로그 출력을 위한 로거 생성
+  private logger = new Logger('Boards');
+
   // 모든 게시판 조회
   async getAllBoards(): Promise<BoardEntity[]> {
     const allBoards = await this.boardsRepository.find();
@@ -24,6 +27,8 @@ export class BoardsService {
     if (allBoards.length === 0) {
       throw new NotFoundException('현재 게시판이 존재하지 않습니다.');
     }
+
+    this.logger.verbose(`${allBoards.length}개의 게시판이 조회되었습니다.`);
 
     return allBoards;
   }
@@ -49,6 +54,10 @@ export class BoardsService {
     if (!userBoards) {
       throw new NotFoundException('해당 유저의 게시판이 존재하지 않습니다');
     }
+
+    this.logger.verbose(
+      `${user.username} 유저의 ${userBoards.length}개의 게시판이 조회되었습니다.`,
+    );
 
     return userBoards;
   }
